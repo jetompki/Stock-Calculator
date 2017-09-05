@@ -31,5 +31,5 @@ Example:
             CalculatorView calculatorView = new CalculatorView();
             calculatorView.ShowDialog();
         }
-
-![Alt text](/Stock-Calculator/blob/master/StockCalculator.PNG?raw=true "Stock Calculator")
+        
+![ScreenShot](https://raw.github.com/jetompki/Stock-Calculator/master/StockCalculator.PNG)
