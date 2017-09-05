@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Argin.Extensions.ProfitCalculator.Views.CalculatorInputView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              
+             xmlns:res="clr-namespace:Argin.Extensions.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="189*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="30" MinHeight="30"/>
+            <RowDefinition MaxHeight="30" MinHeight="30"/>
+            <RowDefinition MaxHeight="30" MinHeight="30"/>
+            <RowDefinition MaxHeight="30" MinHeight="30"/>
+            <RowDefinition MaxHeight="30" MinHeight="30"/>
+            <RowDefinition MaxHeight="30" MinHeight="30"/>
+        </Grid.RowDefinitions>
+
+        <Label FontFamily="Helvetica" FontSize="14" Grid.Row="0"  Grid.Column="0" Content="{x:Static res:CalculatorStrings.InitialSharePriceText}" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0,0,2,0"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InitialSharePrice, TargetNullValue='', Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Margin="5"></TextBox>
+
+        <Label FontFamily="Helvetica" FontSize="14" Grid.Row="1" Grid.Column="0" Content="{x:Static res:CalculatorStrings.FinalSharePriceText}" HorizontalAlignment="Right"  VerticalAlignment="Center" Padding="0" Margin="0,0,2,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FinalSharePrice,TargetNullValue='', Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Margin="5"></TextBox>
+
+        <Label FontFamily="Helvetica" FontSize="14" Grid.Row="2" Grid.Column="0" Content="{x:Static res:CalculatorStrings.MakerFeePercentText}" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0,0,2,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MakerFee, TargetNullValue='', Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Margin="5"></TextBox>
+
+        <Label FontFamily="Helvetica" FontSize="14" Grid.Row="3" Grid.Column="0" Content="{x:Static res:CalculatorStrings.TakerFeePercentText}" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0,0,2,0"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding TakerFee, TargetNullValue='', Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Margin="5"></TextBox>
+
+        <Label FontFamily="Helvetica" FontSize="14" Grid.Row="4" Grid.Column="0" Content="{x:Static res:CalculatorStrings.AllotmentText}" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0,0,2,0"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Allotment, TargetNullValue='', Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Margin="5"></TextBox>
+
+        <Label FontFamily="Helvetica" Grid.Row="5" Grid.Column="0" FontSize="14" Content="{x:Static res:CalculatorStrings.DesiredProfitPercentText}" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0,0,2,0" />
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding ProfitPercentage, TargetNullValue='', Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Margin="5"></TextBox>
+    </Grid>
+</UserControl>
