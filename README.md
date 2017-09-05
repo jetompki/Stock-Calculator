@@ -1,5 +1,5 @@
 # Stock-Calculator
-This is an extension on a project currently in development. It is a calculator used to measure important metrics when trading stocks. Includes proceeds, costs, net profit, return on investment, break even point, and desired profit.
+This is an extension on a project currently in development. It's a calculator used to measure important metrics when trading stocks. Includes proceeds, costs, net profit, return on investment, break even point, and desired profit.
 
 Use:
 
