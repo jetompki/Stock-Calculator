@@ -24,7 +24,7 @@ Example:
                 </MenuItem>
             </Menu>
             
-  ----  Code-behind:  ----
+  ----  Code-Behind:  ----
 
       private void ProfitCalculator_Click(object sender, RoutedEventArgs e)
         {
