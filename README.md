@@ -6,10 +6,13 @@ Use:
 1. Add Argin.Extensions to your solution.
 2. Provide reference to Argin.Extensions from a project of your choice.
 3. Include the following using:
+
        using Argin.Extensions.ProfitCalculator.Views;
+    
 4. Call the following to open the window:
-        CalculatorView calculatorView = new CalculatorView();
-        calculatorView.ShowDialog();
+
+       CalculatorView calculatorView = new CalculatorView();
+       calculatorView.ShowDialog();
 
 Example:
       
