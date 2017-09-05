@@ -9,7 +9,16 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
-        <converters:DoubleToBrushConverter x:Key="DoubleToBrushConverter" />
+        <ResourceDictionary>
+            <converters:DoubleToBrushConverter x:Key="DoubleToBrushConverter">
+                <converters:DoubleToBrushConverter.ResourceDictionary>
+                    <ResourceDictionary Source="/Argin.Extensions;component/Resources/CalculatorStyles.xaml"></ResourceDictionary>
+                </converters:DoubleToBrushConverter.ResourceDictionary>
+            </converters:DoubleToBrushConverter>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Argin.Extensions;component/Resources/CalculatorStyles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     
     <Grid>

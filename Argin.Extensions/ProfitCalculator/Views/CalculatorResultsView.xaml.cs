@@ -27,7 +27,7 @@ namespace Argin.Extensions.ProfitCalculator.Views
 
             if (e.PropertyName == "DisplayText")
             {
-                ColorDisplayText(calcResultsVM);
+                ColorDisplayText(calcResultsVM);         
             }
         }
 
@@ -45,21 +45,21 @@ namespace Argin.Extensions.ProfitCalculator.Views
 
             if (splitter.Count() == 2)
             {
-                AppendText(DisplayRichTextBox, splitter[0], "Black");
+                AppendText(DisplayRichTextBox, splitter[0], Brushes.Black);
 
                 if (profitPercentage < 0)
-                    AppendText(DisplayRichTextBox, profitPercentageString, "Red");
+                    AppendText(DisplayRichTextBox, profitPercentageString, (FindResource("NegativeLossBrush") as SolidColorBrush));
                 else if (profitPercentage > 0)
-                    AppendText(DisplayRichTextBox, profitPercentageString, "Green");
+                    AppendText(DisplayRichTextBox, profitPercentageString, (FindResource("PositiveGainBrush") as SolidColorBrush));
                 else
-                    AppendText(DisplayRichTextBox, profitPercentageString, "Black");
+                    AppendText(DisplayRichTextBox, profitPercentageString, Brushes.Black);
 
-                AppendText(DisplayRichTextBox, splitter[1], "Black");
+                AppendText(DisplayRichTextBox, splitter[1], Brushes.Black);
                 DisplayRichTextBox.Document.TextAlignment = TextAlignment.Center;
             }
             else
             {
-                AppendText(DisplayRichTextBox, displayText, "Black");
+                AppendText(DisplayRichTextBox, displayText, Brushes.Black);
                 DisplayRichTextBox.Document.TextAlignment = TextAlignment.Center;
             }
         }
@@ -76,6 +76,20 @@ namespace Argin.Extensions.ProfitCalculator.Views
             {
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty,
                     bc.ConvertFromString(color));
+            }
+            catch (FormatException) { }
+        }
+
+        /// <summary>
+        /// Appends a string to the RichTextBox with the specified color.
+        /// </summary>
+        public void AppendText(RichTextBox box, string text, Brush brush)
+        {
+            TextRange tr = new TextRange(box.Document.ContentEnd, box.Document.ContentEnd);
+            tr.Text = text;
+            try
+            {
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
             }
             catch (FormatException) { }
         }

@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows;
 
 namespace Argin.Extensions.Converters
 {
     public class DoubleToBrushConverter : IValueConverter
     {
+        private ResourceDictionary _resourceDictionary;
+        public ResourceDictionary ResourceDictionary
+        {
+            get { return _resourceDictionary; }
+            set
+            {
+                _resourceDictionary = value;
+            }
+        }
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             SolidColorBrush brush = new SolidColorBrush(Colors.Black);
@@ -14,11 +24,11 @@ namespace Argin.Extensions.Converters
 
             if ((double)value < 0.0)
             {
-                brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#990000"));
+                brush = ResourceDictionary["NegativeLossBrush"] as SolidColorBrush;
             }
             else if ((double)value > 0.0)
             {
-                brush = new SolidColorBrush(Colors.Green);
+               brush = ResourceDictionary["PositiveGainBrush"] as SolidColorBrush;
             }
 
             return brush;
