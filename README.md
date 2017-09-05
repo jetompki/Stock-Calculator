@@ -32,3 +32,4 @@ Example:
             calculatorView.ShowDialog();
         }
 
+![Alt text](/Stock-Calculator/blob/master/StockCalculator.PNG?raw=true "Stock Calculator")
