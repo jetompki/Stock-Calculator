@@ -13,15 +13,15 @@ Use:
 
 Example:
       
-    ----  WPF: ----
+  ----  WPF: ----
 
            <Menu Background="LightGray">
                 <MenuItem Header="Tools" Height="25">
                     <MenuItem Header="Profit Calculator" Click="ProfitCalculator_Click"/>
                 </MenuItem>
             </Menu>
-   
-   ----  Code-behind:  ----
+            
+  ----  Code-behind:  ----
 
       private void ProfitCalculator_Click(object sender, RoutedEventArgs e)
         {
