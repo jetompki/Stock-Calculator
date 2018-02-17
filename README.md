@@ -32,6 +32,8 @@ Example:
             calculatorView.ShowDialog();
         }
         
-![ScreenShot](https://raw.github.com/jetompki/Stock-Calculator/master/StockCalculator.PNG)
+![ScreenShot](https://raw.github.com/jetompki/Stock-Calculator/master/StockCalculator-rev1.1.PNG)
 
-Note: If you'd like to test this project without going through the above steps, I've included a viewer in the solution. Ensure that the CalculatorViewer is marked as your StartUp Project and run the program from Visual Studio. Alternatively, build the solution and navigate to the bin/Debug directory of the CalculatorViewer and run the *CalculatorViewer.exe* file.
+Note: 
+
+If you'd like to test this project without going through the above steps, I've included a viewer in the solution. Ensure that the CalculatorViewer is marked as your StartUp Project and run the program from Visual Studio. Alternatively, build the solution and navigate to the bin/Debug directory of the CalculatorViewer and run the *CalculatorViewer.exe* file.
