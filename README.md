@@ -32,7 +32,10 @@ Example:
             calculatorView.ShowDialog();
         }
         
-![ScreenShot](https://raw.github.com/jetompki/Stock-Calculator/master/StockCalculator-rev1.1.PNG)
+<p align="center">
+      <img src="https://raw.github.com/jetompki/Stock-Calculator/master/StockCalculator-rev1.1.PNG"></img>
+</p>
+
 
 Note: 
 
