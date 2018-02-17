@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows;
 
 namespace Argin.Extensions.Converters
 {
@@ -28,7 +28,7 @@ namespace Argin.Extensions.Converters
             }
             else if ((double)value > 0.0)
             {
-               brush = ResourceDictionary["PositiveGainBrush"] as SolidColorBrush;
+                brush = ResourceDictionary["PositiveGainBrush"] as SolidColorBrush;
             }
 
             return brush;

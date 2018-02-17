@@ -22,7 +22,13 @@ namespace Argin.Extensions.ProfitCalculator.Events
         private readonly double? _allotment;
         public double? Allotment { get { return _allotment; } }
 
-        public InputChangedEventArgs(double? initial, double? final, double? profitPercent, double? maker, double? taker, double? allotment)
+        private readonly bool _takerFeePercentageChecked;
+        public bool TakerFeePercentageChecked { get { return _takerFeePercentageChecked; } }
+
+        private readonly bool _makerFeePercentageChecked;
+        public bool MakerFeePercentageChecked { get { return _makerFeePercentageChecked; } }
+
+        public InputChangedEventArgs(double? initial, double? final, double? profitPercent, double? maker, double? taker, double? allotment, bool takerFeePercentageChecked, bool makerFeePercentageChecked)
         {
             _initialSharePrice = initial;
             _finalSharePrice = final;
@@ -30,6 +36,8 @@ namespace Argin.Extensions.ProfitCalculator.Events
             _makerFee = maker;
             _takerFee = taker;
             _allotment = allotment;
+            _takerFeePercentageChecked = takerFeePercentageChecked;
+            _makerFeePercentageChecked = makerFeePercentageChecked;
         }
     }
 }

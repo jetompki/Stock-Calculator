@@ -40,10 +40,10 @@ namespace Argin.Extensions.ProfitCalculator.Data
                     _calcResultsVM.DisplayText = CalculatorStrings.BreakEvenText;
 
                 double? proceeds = CalculateProceeds(e.FinalSharePrice, e.Allotment);
-                double? cost = CalculateCost(e.InitialSharePrice, e.FinalSharePrice, e.TakerFee, e.MakerFee, e.Allotment);
+                double? cost = CalculateCost(e.InitialSharePrice, e.FinalSharePrice, e.TakerFee, e.MakerFee, e.Allotment, e.TakerFeePercentageChecked, e.MakerFeePercentageChecked);
                 double? netProfit = CalculateNetProfit(proceeds, cost, e.InitialSharePrice, e.Allotment);
                 double? roi = CalculateRoI(netProfit, cost, e.InitialSharePrice, e.Allotment);
-                double? finalSharePrice = CalculateDisplayedFinalSharePrice(e.InitialSharePrice, e.FinalSharePrice, e.ProfitPercentage, e.TakerFee, e.MakerFee, e.Allotment);
+                double? finalSharePrice = CalculateDisplayedFinalSharePrice(e.InitialSharePrice, e.FinalSharePrice, e.ProfitPercentage, e.TakerFee, e.MakerFee, e.Allotment, e.TakerFeePercentageChecked, e.MakerFeePercentageChecked);
 
                 _calcResultsVM.Proceeds = proceeds;
                 _calcResultsVM.Cost = cost;
@@ -55,10 +55,7 @@ namespace Argin.Extensions.ProfitCalculator.Data
                     _calcResultsVM.RoI = roi;
 
                 if (finalSharePrice != null)
-                    _calcResultsVM.FinalSharePrice = Math.Round((double)finalSharePrice, 2);
-                else
                     _calcResultsVM.FinalSharePrice = finalSharePrice;
-
 
                 _state = State.Idle;
             }
@@ -76,11 +73,14 @@ namespace Argin.Extensions.ProfitCalculator.Data
 
         /// <summary>
         /// Given the Inital Share Price, Final Share Price Maker Fee, Taker Fee, and Allotment, calculate the total cost after buying then selling. 
+        /// Uses an alternate method depending on type of Maker/Taker Fee (Percent or Flat).
         /// </summary>
         /// <returns>The total cost of purchasing and selling.</returns>
-        private double? CalculateCost(double? initialSharePrice, double? finalSharePrice, double? takerFee, double? makerFee, double? allotment)
+        private double? CalculateCost(double? initialSharePrice, double? finalSharePrice, double? takerFee, double? makerFee, double? allotment, bool useTakerFeePercent, bool useMakerFeePercent)
         {
-            return (initialSharePrice * allotment) + (initialSharePrice * allotment) * (takerFee / 100) + (finalSharePrice * allotment) * (makerFee / 100);
+            var part1 = useTakerFeePercent ? (initialSharePrice * allotment) + (initialSharePrice * allotment) * (takerFee / 100) : initialSharePrice * allotment + takerFee;
+            var part2 = useMakerFeePercent ? part1 + (finalSharePrice * allotment) * (makerFee / 100) : part1 + makerFee;
+            return part2;
         }
 
         private double? CalculateProceeds(double? finalSharePrice, double? allotment)
@@ -89,36 +89,49 @@ namespace Argin.Extensions.ProfitCalculator.Data
         }
 
         /// <summary>
-        /// Given Initial Share Price, Maker Fee, Taker Fee  calculate FinalSharePrice such that NetProfit == 0.
+        /// Given Initial Share Price, Maker Fee, Taker Fee calculate FinalSharePrice such that NetProfit == 0.
+        /// Uses an alternate method depending on type of Maker/Taker Fee (Percent or Flat).
         /// </summary>
         /// <returns>FinalSharePrice that will result in neither profit nor loss.</returns>
-        private double? CalculateBreakEvenPrice(double? initialSharePrice, double? allotment, double? takerFee, double? makerFee)
+        private double? CalculateBreakEvenPrice(double? initialSharePrice, double? allotment, double? takerFee, double? makerFee, bool useTakerFeePercent, bool useMakerFeePercent)
         {
-            return ((initialSharePrice * allotment) + (initialSharePrice * allotment * takerFee / 100)) / (allotment * (1 - makerFee / 100));
+            var part1 = useTakerFeePercent ? (initialSharePrice * allotment) + (initialSharePrice * allotment) * (takerFee / 100) : (initialSharePrice * allotment) + takerFee;
+            var part2 = useMakerFeePercent ? part1 / (allotment * (1 - makerFee / 100)) : (part1 + makerFee) / allotment;
+            return part2;
         }
 
         /// <summary>
         /// Given Initial Share Price, Allotment, Maker Fee, Taker Fee, profitPercentage  calculate FinalSharePrice such that RoI == profitPercentage.
+        /// Uses an alternate method depending on type of Maker/Taker Fee (Percent or Flat).
         /// </summary>
         /// <returns>FinalSharePrice that will obtain the desired profit.</returns>
-        private double? CalculatedDesiredReturnPrice(double? initialSharePrice, double? allotment, double? takerFee, double? makerFee, double? profitPercentage)
+        private double? CalculatedDesiredReturnPrice(double? initialSharePrice, double? allotment, double? takerFee, double? makerFee, double? profitPercentage, bool useTakerFeePercent, bool useMakerFeePercent)
         {
-            if (100 - makerFee < profitPercentage)
+            // This will result in an invalid denominator. 
+            if (makerFee * (profitPercentage + 100) == 10000 || allotment == 0 || (allotment * initialSharePrice + takerFee) == 0)
             {
-                // The desired percentage exceeds the percentage of proceeds being received.
                 return double.NaN;
             }
 
-            if (makerFee * (profitPercentage + 100) == 10000 || allotment == 0)
+            var part1 = useTakerFeePercent ? -1 * (initialSharePrice * (profitPercentage + 100) * (takerFee + 100)) : (profitPercentage + 100) * (allotment * initialSharePrice + takerFee);
+            var part2 = useMakerFeePercent ? part1 / (makerFee * (profitPercentage + 100) - 10000) : (part1 + 100 * makerFee) / (allotment * 100);
+
+            var result = part2;
+
+            // The input resulted in an invalid calculation. Most likely the maker fee was too high relative to the desired profitPercentage
+            if (result < 0)
             {
-                // This will result in an invalid denominator. 
                 return double.NaN;
             }
 
-            return -1 * (initialSharePrice * (profitPercentage + 100) * (takerFee + 100)) / (makerFee * (profitPercentage + 100) - 10000);
+            return result;
         }
 
-        private double? CalculateDisplayedFinalSharePrice(double? initialSharePrice, double? finalSharePrice, double? profitPercentage, double? takerFee, double? makerFee, double? allotment)
+        /// <summary>
+        /// Calculates the DisplayedFinalSharePrice which is either the BreakEvenPrice or the DesiredReturnPrice, depending on how the user has filled out the input view.
+        /// </summary>
+        /// <returns></returns>
+        private double? CalculateDisplayedFinalSharePrice(double? initialSharePrice, double? finalSharePrice, double? profitPercentage, double? takerFee, double? makerFee, double? allotment, bool useTakerFeePercent, bool useMakerFeePercent)
         {
             if (makerFee >= 100)
             {
@@ -127,11 +140,11 @@ namespace Argin.Extensions.ProfitCalculator.Data
             }
 
             if (profitPercentage == null || profitPercentage == 0.0)
-            {              
-                return CalculateBreakEvenPrice(initialSharePrice, allotment, takerFee, makerFee);
+            {
+                return CalculateBreakEvenPrice(initialSharePrice, allotment, takerFee, makerFee, useTakerFeePercent, useMakerFeePercent);
             }
 
-             return CalculatedDesiredReturnPrice(initialSharePrice, allotment, takerFee, makerFee, profitPercentage);
+            return CalculatedDesiredReturnPrice(initialSharePrice, allotment, takerFee, makerFee, profitPercentage, useTakerFeePercent, useMakerFeePercent);
         }
     }
 }

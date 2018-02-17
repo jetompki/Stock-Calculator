@@ -5,7 +5,7 @@ using Argin.Extensions.ProfitCalculator.Events;
 namespace Argin.Extensions.ProfitCalculator.ViewModels
 {
     /// <summary>
-    /// The calculator with references to it's components.
+    /// The calculator with references to its components.
     /// </summary>
     public class CalculatorViewModel : ViewModelBase
     {

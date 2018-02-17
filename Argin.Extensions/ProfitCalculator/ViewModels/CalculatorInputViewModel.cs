@@ -79,14 +79,36 @@ namespace Argin.Extensions.ProfitCalculator.ViewModels
             }
         }
 
+        private bool _takerFeePercentageChecked = false;
+        public bool TakerFeePercentageChecked
+        {
+            get { return _takerFeePercentageChecked; }
+            set
+            {
+                _takerFeePercentageChecked = value;
+                if (IsCalculatorInputComplete) OnInputChanged();
+            }
+        }
+
+        private bool _makerFeePercentageChecked = false;
+        public bool MakerFeePercentageChecked
+        {
+            get { return _makerFeePercentageChecked; }
+            set
+            {
+                _makerFeePercentageChecked = value;
+                if (IsCalculatorInputComplete) OnInputChanged();
+            }
+        }
+
         public bool IsCalculatorInputComplete
         {
             get
             {
-                bool method= _initialSharePrice != null && _finalSharePrice != null && _makerFee != null && _takerFee != null && _allotment != null;
+                bool method = _initialSharePrice != null && _finalSharePrice != null && _makerFee != null && _takerFee != null && _allotment != null;
 
                 if (!method)
-                     method = _initialSharePrice != null && _makerFee != null && _takerFee != null && _allotment != null && _profitPercentage != null;
+                    method = _initialSharePrice != null && _makerFee != null && _takerFee != null && _allotment != null && _profitPercentage != null;
 
                 return method;
             }
@@ -96,7 +118,7 @@ namespace Argin.Extensions.ProfitCalculator.ViewModels
 
         protected virtual void OnInputChanged()
         {
-            InputChanged?.Invoke(this, new InputChangedEventArgs(_initialSharePrice, _finalSharePrice, _profitPercentage, _makerFee, _takerFee, _allotment));
+            InputChanged?.Invoke(this, new InputChangedEventArgs(_initialSharePrice, _finalSharePrice, _profitPercentage, _makerFee, _takerFee, _allotment, _makerFeePercentageChecked, _takerFeePercentageChecked));
         }
     }
 }
